@@ -86,6 +86,8 @@
 
 /doc/api/modules.md @nodejs/modules
 /doc/api/esm.md @nodejs/modules
+/doc/api/module.md @nodejs/modules
+/doc/api/packages.md @nodejs/modules
 /lib/module.js @nodejs/modules
 /lib/internal/modules/* @nodejs/modules
 /lib/internal/bootstrap/loaders.js @nodejs/modules
@@ -97,3 +99,11 @@
 /src/js_native_api* @nodejs/n-api
 /doc/guides/adding-new-napi-api.md @nodejs/n-api
 /doc/api/n-api.md @nodejs/n-api
+
+# WASI
+/deps/uvwasi/ @nodejs/wasi
+/doc/api/wasi.md @nodejs/wasi
+/lib/wasi.js @nodejs/wasi
+/src/node_wasi* @nodejs/wasi
+/test/wasi/ @nodejs/wasi
+/test/fixtures/wasi/ @nodejs/wasi

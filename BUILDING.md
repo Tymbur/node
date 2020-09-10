@@ -111,7 +111,7 @@ platforms. This is true regardless of entries in the table below.
 | Windows          | x86 (native)     | >= Windows 8.1/2012 R2          | Tier 1 (running) / Experimental (compiling) <sup>[6](#fn6)</sup> | |
 | Windows          | x64, x86         | Windows Server 2012 (not R2)    | Experimental |                                   |
 | Windows          | arm64            | >= Windows 10                   | Tier 2 (compiling) / Experimental (running) |    |
-| macOS            | x64              | >= 10.11                        | Tier 1       |                                   |
+| macOS            | x64              | >= 10.13                        | Tier 1       |                                   |
 | SmartOS          | x64              | >= 18                           | Tier 2       |                                   |
 | AIX              | ppc64be >=power7 | >= 7.2 TL02                     | Tier 2       |                                   |
 | FreeBSD          | x64              | >= 11                           | Experimental | Downgraded as of Node.js 12  <sup>[7](#fn7)</sup>     |
@@ -417,41 +417,51 @@ To build the documentation:
 
 This will build Node.js first (if necessary) and then use it to build the docs:
 
-```console
-$ make doc
+```bash
+make doc
 ```
 
 If you have an existing Node.js build, you can build just the docs with:
 
-```console
-$ NODE=/path/to/node make doc-only
+```bash
+NODE=/path/to/node make doc-only
 ```
 
-To read the documentation:
+To read the man page:
 
-```console
-$ man doc/node.1
+```bash
+man doc/node.1
 ```
 
-If you prefer to read the documentation in a browser,
-run the following after `make doc` is finished:
+If you prefer to read the full documentation in a browser, run the following.
 
-```console
-$ make docopen
+```bash
+make docserve
 ```
 
-This will open a browser with the documentation.
+This will spin up a static file server and provide a URL to where you may browse
+the documentation locally.
+
+If you're comfortable viewing the documentation using the program your operating
+system has associated with the default web browser, run the following.
+
+```bash
+make docopen
+```
+
+This will open a file URL to a one-page version of all the browsable HTML
+documents using the default browser.
 
 To test if Node.js was built correctly:
 
-```console
-$ ./node -e "console.log('Hello from Node.js ' + process.version)"
+```bash
+./node -e "console.log('Hello from Node.js ' + process.version)"
 ```
 
 To install this version of Node.js into a system directory:
 
-```console
-$ [sudo] make install
+```bash
+[sudo] make install
 ```
 
 #### Building a debug build
