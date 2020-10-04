@@ -539,9 +539,8 @@ a code {
 #column2 ul li a.active,
 #column2 ul li a.active:hover,
 #column2 ul li a.active:focus {
-  color: #43853d;
-  border-radius: 0;
-  border-bottom: 1px solid #43853d;
+  font-weight: 700;
+  color: #fff;
   background-color: transparent;
 }
 
@@ -571,6 +570,14 @@ span > .mark:active {
 th > *:last-child,
 td > *:last-child {
   margin-bottom: 0;
+}
+
+kbd {
+  font-size: 1.2em;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 1px 2px 0;
+  border: 1px solid black;
 }
 
 .changelog > summary {

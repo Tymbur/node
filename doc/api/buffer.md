@@ -288,6 +288,10 @@ It can be constructed in a variety of ways.
 <!-- YAML
 added: v5.10.0
 changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/34682
+    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
+                 for invalid input arguments.
   - version: v10.0.0
     pr-url: https://github.com/nodejs/node/pull/18129
     description: Attempting to fill a non-zero length buffer with a zero length
@@ -319,7 +323,7 @@ console.log(buf);
 ```
 
 If `size` is larger than
-[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_OPT_VALUE`][]
+[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_ARG_VALUE`][]
 is thrown.
 
 If `fill` is specified, the allocated `Buffer` will be initialized by calling
@@ -353,6 +357,10 @@ A `TypeError` will be thrown if `size` is not a number.
 <!-- YAML
 added: v5.10.0
 changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/34682
+    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
+                 for invalid input arguments.
   - version: v7.0.0
     pr-url: https://github.com/nodejs/node/pull/7079
     description: Passing a negative `size` will now throw an error.
@@ -361,7 +369,7 @@ changes:
 * `size` {integer} The desired length of the new `Buffer`.
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than
-[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_OPT_VALUE`][]
+[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_ARG_VALUE`][]
 is thrown.
 
 The underlying memory for `Buffer` instances created in this way is *not
@@ -401,12 +409,17 @@ additional performance that [`Buffer.allocUnsafe()`][] provides.
 ### Static method: `Buffer.allocUnsafeSlow(size)`
 <!-- YAML
 added: v5.12.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/34682
+    description: Throw ERR_INVALID_ARG_VALUE instead of ERR_INVALID_OPT_VALUE
+                 for invalid input arguments.
 -->
 
 * `size` {integer} The desired length of the new `Buffer`.
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than
-[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_OPT_VALUE`][]
+[`buffer.constants.MAX_LENGTH`][] or smaller than 0, [`ERR_INVALID_ARG_VALUE`][]
 is thrown. A zero-length `Buffer` is created if `size` is 0.
 
 The underlying memory for `Buffer` instances created in this way is *not
@@ -3229,12 +3242,12 @@ if `size` is less than or equal to half [`Buffer.poolSize`][]. Instances
 returned by [`Buffer.allocUnsafeSlow()`][] *never* use the shared internal
 memory pool.
 
-### The `--zero-fill-buffers` command line option
+### The `--zero-fill-buffers` command-line option
 <!-- YAML
 added: v5.10.0
 -->
 
-Node.js can be started using the `--zero-fill-buffers` command line option to
+Node.js can be started using the `--zero-fill-buffers` command-line option to
 cause all newly-allocated `Buffer` instances to be zero-filled upon creation by
 default. Without the option, buffers created with [`Buffer.allocUnsafe()`][],
 [`Buffer.allocUnsafeSlow()`][], and `new SlowBuffer(size)` are not zero-filled.
@@ -3261,7 +3274,12 @@ While there are clear performance advantages to using
 [`Buffer.allocUnsafe()`][], extra care *must* be taken in order to avoid
 introducing security vulnerabilities into an application.
 
+[ASCII]: https://en.wikipedia.org/wiki/ASCII
+[Base64]: https://en.wikipedia.org/wiki/Base64
+[ISO-8859-1]: https://en.wikipedia.org/wiki/ISO-8859-1
 [RFC 4648, Section 5]: https://tools.ietf.org/html/rfc4648#section-5
+[UTF-16]: https://en.wikipedia.org/wiki/UTF-16
+[UTF-8]: https://en.wikipedia.org/wiki/UTF-8
 [WHATWG Encoding Standard]: https://encoding.spec.whatwg.org/
 [`ArrayBuffer`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
 [`Buffer.alloc()`]: #buffer_static_method_buffer_alloc_size_fill_encoding
@@ -3273,18 +3291,18 @@ introducing security vulnerabilities into an application.
 [`Buffer.from(string)`]: #buffer_static_method_buffer_from_string_encoding
 [`Buffer.poolSize`]: #buffer_class_property_buffer_poolsize
 [`DataView`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
-[`ERR_INVALID_BUFFER_SIZE`]: errors.html#ERR_INVALID_BUFFER_SIZE
-[`ERR_INVALID_OPT_VALUE`]: errors.html#ERR_INVALID_OPT_VALUE
-[`ERR_OUT_OF_RANGE`]: errors.html#ERR_OUT_OF_RANGE
+[`ERR_INVALID_ARG_VALUE`]: errors.md#ERR_INVALID_ARG_VALUE
+[`ERR_INVALID_BUFFER_SIZE`]: errors.md#ERR_INVALID_BUFFER_SIZE
+[`ERR_OUT_OF_RANGE`]: errors.md#ERR_OUT_OF_RANGE
 [`JSON.stringify()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [`SharedArrayBuffer`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
 [`String#indexOf()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf
 [`String#lastIndexOf()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf
 [`String.prototype.length`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length
-[`TypedArray.from()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/from
 [`TypedArray#set()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set
 [`TypedArray#slice()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/slice
 [`TypedArray#subarray()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/subarray
+[`TypedArray.from()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/from
 [`TypedArray`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 [`Uint8Array`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 [`buf.buffer`]: #buffer_buf_buffer
@@ -3300,12 +3318,7 @@ introducing security vulnerabilities into an application.
 [`buffer.constants.MAX_LENGTH`]: #buffer_buffer_constants_max_length
 [`buffer.constants.MAX_STRING_LENGTH`]: #buffer_buffer_constants_max_string_length
 [`buffer.kMaxLength`]: #buffer_buffer_kmaxlength
-[`util.inspect()`]: util.html#util_util_inspect_object_options
-[ASCII]: https://en.wikipedia.org/wiki/ASCII
-[Base64]: https://en.wikipedia.org/wiki/Base64
-[ISO-8859-1]: https://en.wikipedia.org/wiki/ISO-8859-1
-[UTF-8]: https://en.wikipedia.org/wiki/UTF-8
-[UTF-16]: https://en.wikipedia.org/wiki/UTF-16
+[`util.inspect()`]: util.md#util_util_inspect_object_options
 [binary strings]: https://developer.mozilla.org/en-US/docs/Web/API/DOMString/Binary
 [endianness]: https://en.wikipedia.org/wiki/Endianness
 [iterator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
