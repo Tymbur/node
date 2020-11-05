@@ -31,14 +31,14 @@ using v8::SealHandleScope;
 using v8::String;
 using v8::Value;
 
-static bool AllowWasmCodeGenerationCallback(Local<Context> context,
-                                            Local<String>) {
+bool AllowWasmCodeGenerationCallback(Local<Context> context,
+                                     Local<String>) {
   Local<Value> wasm_code_gen =
       context->GetEmbedderData(ContextEmbedderIndex::kAllowWasmCodeGeneration);
   return wasm_code_gen->IsUndefined() || wasm_code_gen->IsTrue();
 }
 
-static bool ShouldAbortOnUncaughtException(Isolate* isolate) {
+bool ShouldAbortOnUncaughtException(Isolate* isolate) {
   DebugSealHandleScope scope(isolate);
   Environment* env = Environment::GetCurrent(isolate);
   return env != nullptr &&
@@ -48,9 +48,9 @@ static bool ShouldAbortOnUncaughtException(Isolate* isolate) {
          !env->inside_should_not_abort_on_uncaught_scope();
 }
 
-static MaybeLocal<Value> PrepareStackTraceCallback(Local<Context> context,
-                                      Local<Value> exception,
-                                      Local<Array> trace) {
+MaybeLocal<Value> PrepareStackTraceCallback(Local<Context> context,
+                                            Local<Value> exception,
+                                            Local<Array> trace) {
   Environment* env = Environment::GetCurrent(context);
   if (env == nullptr) {
     return exception->ToString(context).FromMaybe(Local<Value>());
@@ -245,7 +245,7 @@ void SetIsolateMiscHandlers(v8::Isolate* isolate, const IsolateSettings& s) {
 
   if ((s.flags & SHOULD_NOT_SET_PROMISE_REJECTION_CALLBACK) == 0) {
     auto* promise_reject_cb = s.promise_reject_callback ?
-      s.promise_reject_callback : task_queue::PromiseRejectCallback;
+      s.promise_reject_callback : PromiseRejectCallback;
     isolate->SetPromiseRejectCallback(promise_reject_cb);
   }
 
@@ -262,10 +262,6 @@ void SetIsolateUpForNode(v8::Isolate* isolate,
 void SetIsolateUpForNode(v8::Isolate* isolate) {
   IsolateSettings settings;
   SetIsolateUpForNode(isolate, settings);
-}
-
-Isolate* NewIsolate(ArrayBufferAllocator* allocator, uv_loop_t* event_loop) {
-  return NewIsolate(allocator, event_loop, GetMainThreadMultiIsolatePlatform());
 }
 
 // TODO(joyeecheung): we may want to expose this, but then we need to be
@@ -326,18 +322,6 @@ struct InspectorParentHandleImpl : public InspectorParentHandle {
     : impl(std::move(impl)) {}
 };
 #endif
-
-Environment* CreateEnvironment(IsolateData* isolate_data,
-                               Local<Context> context,
-                               int argc,
-                               const char* const* argv,
-                               int exec_argc,
-                               const char* const* exec_argv) {
-  return CreateEnvironment(
-      isolate_data, context,
-      std::vector<std::string>(argv, argv + argc),
-      std::vector<std::string>(exec_argv, exec_argv + exec_argc));
-}
 
 Environment* CreateEnvironment(
     IsolateData* isolate_data,
@@ -410,16 +394,9 @@ NODE_EXTERN std::unique_ptr<InspectorParentHandle> GetInspectorParentHandle(
 #endif
 }
 
-void LoadEnvironment(Environment* env) {
-  USE(LoadEnvironment(env,
-                      StartExecutionCallback{},
-                      {}));
-}
-
 MaybeLocal<Value> LoadEnvironment(
     Environment* env,
-    StartExecutionCallback cb,
-    std::unique_ptr<InspectorParentHandle> removeme) {
+    StartExecutionCallback cb) {
   env->InitializeLibuv();
   env->InitializeDiagnostics();
 
@@ -428,8 +405,7 @@ MaybeLocal<Value> LoadEnvironment(
 
 MaybeLocal<Value> LoadEnvironment(
     Environment* env,
-    const char* main_script_source_utf8,
-    std::unique_ptr<InspectorParentHandle> removeme) {
+    const char* main_script_source_utf8) {
   CHECK_NOT_NULL(main_script_source_utf8);
   return LoadEnvironment(
       env,
@@ -458,10 +434,6 @@ MaybeLocal<Value> LoadEnvironment(
 
 Environment* GetCurrentEnvironment(Local<Context> context) {
   return Environment::GetCurrent(context);
-}
-
-MultiIsolatePlatform* GetMainThreadMultiIsolatePlatform() {
-  return per_process::v8_platform.Platform();
 }
 
 MultiIsolatePlatform* GetMultiIsolatePlatform(Environment* env) {

@@ -241,10 +241,6 @@ changes:
   - version: v12.11.0
     pr-url: https://github.com/nodejs/node/pull/29606
     description: The `%c` specifier is ignored now.
-  - version: v11.4.0
-    pr-url: https://github.com/nodejs/node/pull/23708
-    description: The `%d`, `%f` and `%i` specifiers now support Symbols
-                 properly.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/23162
     description: The `format` argument is now only taken as such if it actually
@@ -256,6 +252,10 @@ changes:
                  first argument. This change removes previously present quotes
                  from strings that were being output when the first argument
                  was not a string.
+  - version: v11.4.0
+    pr-url: https://github.com/nodejs/node/pull/23708
+    description: The `%d`, `%f` and `%i` specifiers now support Symbols
+                 properly.
   - version: v11.4.0
     pr-url: https://github.com/nodejs/node/pull/24806
     description: The `%o` specifier's `depth` has default depth of 4 again.
@@ -450,7 +450,9 @@ stream.write('With ES6');
 <!-- YAML
 added: v0.3.0
 changes:
-  - version: REPLACEME
+  - version:
+    - v14.6.0
+    - v12.19.0
     pr-url: https://github.com/nodejs/node/pull/33690
     description: If `object` is from a different `vm.Context` now, a custom
                  inspection function on it will not receive context-specific
@@ -473,13 +475,13 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/27109
     description: The `compact` options default is changed to `3` and the
                  `breakLength` options default is changed to `80`.
-  - version: v11.11.0
-    pr-url: https://github.com/nodejs/node/pull/26269
-    description: The `compact` option accepts numbers for a new output mode.
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/24971
     description: Internal properties no longer appear in the context argument
                  of a custom inspection function.
+  - version: v11.11.0
+    pr-url: https://github.com/nodejs/node/pull/26269
+    description: The `compact` option accepts numbers for a new output mode.
   - version: v11.7.0
     pr-url: https://github.com/nodejs/node/pull/25006
     description: ArrayBuffers now also show their binary contents.
@@ -492,13 +494,13 @@ changes:
   - version: v11.0.0
     pr-url: https://github.com/nodejs/node/pull/22846
     description: The `depth` default changed to `20`.
-  - version: v10.12.0
-    pr-url: https://github.com/nodejs/node/pull/22788
-    description: The `sorted` option is supported now.
   - version: v11.0.0
     pr-url: https://github.com/nodejs/node/pull/22756
     description: The inspection output is now limited to about 128 MB. Data
                  above that size will not be fully inspected.
+  - version: v10.12.0
+    pr-url: https://github.com/nodejs/node/pull/22788
+    description: The `sorted` option is supported now.
   - version: v10.6.0
     pr-url: https://github.com/nodejs/node/pull/20725
     description: Inspecting linked lists and similar objects is now possible
@@ -1157,18 +1159,18 @@ Different Node.js build configurations support different sets of encodings.
 
 #### Encodings supported when Node.js is built with the `small-icu` option
 
-| Encoding     | Aliases                           |
-| -----------  | --------------------------------- |
-| `'utf-8'`    | `'unicode-1-1-utf-8'`, `'utf8'`   |
-| `'utf-16le'` | `'utf-16'`                        |
-| `'utf-16be'` |                                   |
+| Encoding     | Aliases                         |
+| -----------  | ------------------------------- |
+| `'utf-8'`    | `'unicode-1-1-utf-8'`, `'utf8'` |
+| `'utf-16le'` | `'utf-16'`                      |
+| `'utf-16be'` |                                 |
 
 #### Encodings supported when ICU is disabled
 
-| Encoding     | Aliases                           |
-| -----------  | --------------------------------- |
-| `'utf-8'`    | `'unicode-1-1-utf-8'`, `'utf8'`   |
-| `'utf-16le'` | `'utf-16'`                        |
+| Encoding     | Aliases                         |
+| -----------  | ------------------------------- |
+| `'utf-8'`    | `'unicode-1-1-utf-8'`, `'utf8'` |
+| `'utf-16le'` | `'utf-16'`                      |
 
 The `'iso-8859-16'` encoding listed in the [WHATWG Encoding Standard][]
 is not supported.
@@ -1178,7 +1180,7 @@ is not supported.
 added: v8.3.0
 changes:
   - version: v11.0.0
-    pr-url: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22281
     description: The class is now available on the global object.
 -->
 
@@ -1239,7 +1241,7 @@ mark.
 added: v8.3.0
 changes:
   - version: v11.0.0
-    pr-url: v11.0.0
+    pr-url: https://github.com/nodejs/node/pull/22281
     description: The class is now available on the global object.
 -->
 
@@ -1288,6 +1290,10 @@ The encoding supported by the `TextEncoder` instance. Always set to `'utf-8'`.
 ## `util.types`
 <!-- YAML
 added: v10.0.0
+changes:
+  - version: REPLACEME
+    pr-url: https://github.com/nodejs/node/pull/34055
+    description: Exposed as `require('util/types')`.
 -->
 
 `util.types` provides type checks for different kinds of built-in objects.
@@ -1298,6 +1304,8 @@ their prototype), and usually have the overhead of calling into C++.
 The result generally does not make any guarantees about what kinds of
 properties or behavior a value exposes in JavaScript. They are primarily
 useful for addon developers who prefer to do type checking in JavaScript.
+
+The API is accessible via `require('util').types` or `require('util/types')`.
 
 ### `util.types.isAnyArrayBuffer(value)`
 <!-- YAML

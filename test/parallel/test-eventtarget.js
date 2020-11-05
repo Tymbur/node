@@ -57,6 +57,21 @@ let asyncTest = Promise.resolve();
   strictEqual(ev.defaultPrevented, false);
 }
 {
+  [
+    'foo',
+    1,
+    false,
+    function() {},
+  ].forEach((i) => (
+    throws(() => new Event('foo', i), {
+      code: 'ERR_INVALID_ARG_TYPE',
+      name: 'TypeError',
+      message: 'The "options" argument must be of type object.' +
+               common.invalidArgTypeHelper(i)
+    })
+  ));
+}
+{
   const ev = new Event('foo');
   strictEqual(ev.cancelBubble, false);
   ev.cancelBubble = true;
@@ -221,19 +236,18 @@ let asyncTest = Promise.resolve();
     false
   ].forEach((i) => {
     throws(() => target.dispatchEvent(i), {
-      code: 'ERR_INVALID_ARG_TYPE'
+      code: 'ERR_INVALID_ARG_TYPE',
+      name: 'TypeError',
+      message: 'The "event" argument must be an instance of Event.' +
+               common.invalidArgTypeHelper(i)
     });
   });
 
-  [
-    'foo',
-    1,
-    {},  // No handleEvent function
-    false,
-  ].forEach((i) => {
-    throws(() => target.addEventListener('foo', i), {
-      code: 'ERR_INVALID_ARG_TYPE'
-    });
+  const err = (arg) => ({
+    code: 'ERR_INVALID_ARG_TYPE',
+    name: 'TypeError',
+    message: 'The "listener" argument must be an instance of EventListener.' +
+             common.invalidArgTypeHelper(arg)
   });
 
   [
@@ -241,11 +255,14 @@ let asyncTest = Promise.resolve();
     1,
     {},  // No handleEvent function
     false
-  ].forEach((i) => {
-    throws(() => target.removeEventListener('foo', i), {
-      code: 'ERR_INVALID_ARG_TYPE'
-    });
-  });
+  ].forEach((i) => throws(() => target.addEventListener('foo', i), err(i)));
+
+  [
+    'foo',
+    1,
+    {},  // No handleEvent function
+    false
+  ].forEach((i) => throws(() => target.addEventListener('foo', i), err(i)));
 }
 
 {
@@ -397,6 +414,7 @@ let asyncTest = Promise.resolve();
 }
 
 {
+  // Event Statics
   strictEqual(Event.NONE, 0);
   strictEqual(Event.CAPTURING_PHASE, 1);
   strictEqual(Event.AT_TARGET, 2);
@@ -407,6 +425,8 @@ let asyncTest = Promise.resolve();
     strictEqual(e.eventPhase, Event.AT_TARGET);
   }), { once: true });
   target.dispatchEvent(new Event('foo'));
+  // Event is a function
+  strictEqual(Event.length, 1);
 }
 
 {
@@ -461,4 +481,39 @@ let asyncTest = Promise.resolve();
     throws(() => eventTarget.addEventListener('foo', false), TypeError);
     throws(() => eventTarget.addEventListener('foo', Symbol()), TypeError);
   });
+}
+{
+  const eventTarget = new EventTarget();
+  const event = new Event('foo');
+  eventTarget.dispatchEvent(event);
+  strictEqual(event.target, eventTarget);
+}
+{
+  // Event target exported keys
+  const eventTarget = new EventTarget();
+  deepStrictEqual(Object.keys(eventTarget), []);
+  deepStrictEqual(Object.getOwnPropertyNames(eventTarget), []);
+  const parentKeys = Object.keys(Object.getPrototypeOf(eventTarget)).sort();
+  const keys = ['addEventListener', 'dispatchEvent', 'removeEventListener'];
+  deepStrictEqual(parentKeys, keys);
+}
+{
+  // Subclassing
+  class SubTarget extends EventTarget {}
+  const target = new SubTarget();
+  target.addEventListener('foo', common.mustCall());
+  target.dispatchEvent(new Event('foo'));
+}
+{
+  // Test event order
+  const target = new EventTarget();
+  let state = 0;
+  target.addEventListener('foo', common.mustCall(() => {
+    strictEqual(state, 0);
+    state++;
+  }));
+  target.addEventListener('foo', common.mustCall(() => {
+    strictEqual(state, 1);
+  }));
+  target.dispatchEvent(new Event('foo'));
 }

@@ -49,6 +49,9 @@ Additionally, this module includes the utility functions
 [`stream.Readable.from()`][].
 
 ### Streams Promises API
+<!-- YAML
+added: v15.0.0
+-->
 
 The `stream/promises` API provides an alternative set of asynchronous utility
 functions for streams that return `Promise` objects rather than using
@@ -423,7 +426,7 @@ Is `true` after [`writable.destroy()`][writable-destroy] has been called.
 <!-- YAML
 added: v0.9.4
 changes:
-  - version: REPLACEME
+  - version: v15.0.0
     pr-url: https://github.com/nodejs/node/pull/34101
     description: The `callback` is invoked before 'finish' or on error.
   - version: v14.0.0
@@ -1134,7 +1137,7 @@ buffer will be returned.
 If the `size` argument is not specified, all of the data contained in the
 internal buffer will be returned.
 
-The `size` argument must be less than or equal to 1 GB.
+The `size` argument must be less than or equal to 1 GiB.
 
 The `readable.read()` method should only be called on `Readable` streams
 operating in paused mode. In flowing mode, `readable.read()` is called
@@ -1651,15 +1654,15 @@ const cleanup = finished(rs, (err) => {
 <!-- YAML
 added: v10.0.0
 changes:
-  - version: v13.10.0
-    pr-url: https://github.com/nodejs/node/pull/31223
-    description: Add support for async generators.
   - version: v14.0.0
     pr-url: https://github.com/nodejs/node/pull/32158
     description: The `pipeline(..., cb)` will wait for the `'close'` event
                  before invoking the callback. The implementation tries to
                  detect legacy streams and only apply this behavior to streams
                  which are expected to emit `'close'`.
+  - version: v13.10.0
+    pr-url: https://github.com/nodejs/node/pull/31223
+    description: Add support for async generators.
 -->
 
 * `streams` {Stream[]|Iterable[]|AsyncIterable[]|Function[]}
@@ -1969,7 +1972,7 @@ const myWritable = new Writable({
 
 #### `writable._construct(callback)`
 <!-- YAML
-added: REPLACEME
+added: v14.13.1
 -->
 
 * `callback` {Function} Call this function (optionally with an error
@@ -2215,15 +2218,15 @@ constructor and implement the [`readable._read()`][] method.
 #### `new stream.Readable([options])`
 <!-- YAML
 changes:
+  - version: v14.0.0
+    pr-url: https://github.com/nodejs/node/pull/30623
+    description: Change `autoDestroy` option default to `true`.
   - version:
      - v11.2.0
      - v10.16.0
     pr-url: https://github.com/nodejs/node/pull/22795
     description: Add `autoDestroy` option to automatically `destroy()` the
                  stream when it emits `'end'` or errors.
-  - version: v14.0.0
-    pr-url: https://github.com/nodejs/node/pull/30623
-    description: Change `autoDestroy` option default to `true`.
 -->
 
 * `options` {Object}
@@ -2287,7 +2290,7 @@ const myReadable = new Readable({
 
 #### `readable._construct(callback)`
 <!-- YAML
-added: REPLACEME
+added: v14.13.1
 -->
 
 * `callback` {Function} Call this function (optionally with an error
@@ -2313,7 +2316,7 @@ class ReadStream extends Readable {
     this.fd = null;
   }
   _construct(callback) {
-    fs.open(this.filename, (fd, err) => {
+    fs.open(this.filename, (err, fd) => {
       if (err) {
         callback(err);
       } else {

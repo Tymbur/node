@@ -1136,7 +1136,7 @@ int Http2Session::OnNghttpError(nghttp2_session* handle,
   // Unfortunately, this is currently the only way for us to know if
   // the session errored because the peer is not an http2 peer.
   Http2Session* session = static_cast<Http2Session*>(user_data);
-  Debug(session, "Error '%.*s'", len, message);
+  Debug(session, "Error '%s'", message);
   if (strncmp(message, BAD_PEER_MESSAGE, len) == 0) {
     Environment* env = session->env();
     Isolate* isolate = env->isolate();
@@ -1525,12 +1525,12 @@ void Http2Session::ClearOutgoing(int status) {
     std::vector<NgHttp2StreamWrite> current_outgoing_buffers_;
     current_outgoing_buffers_.swap(outgoing_buffers_);
     for (const NgHttp2StreamWrite& wr : current_outgoing_buffers_) {
-      WriteWrap* wrap = wr.req_wrap;
-      if (wrap != nullptr) {
+      BaseObjectPtr<AsyncWrap> wrap = std::move(wr.req_wrap);
+      if (wrap) {
         // TODO(addaleax): Pass `status` instead of 0, so that we actually error
         // out with the error from the write to the underlying protocol,
         // if one occurred.
-        wrap->Done(0);
+        WriteWrap::FromObject(wrap)->Done(0);
       }
     }
   }
@@ -1813,7 +1813,7 @@ void Http2Session::OnStreamRead(ssize_t nread, const uv_buf_t& buf_) {
 
 bool Http2Session::HasWritesOnSocketForStream(Http2Stream* stream) {
   for (const NgHttp2StreamWrite& wr : outgoing_buffers_) {
-    if (wr.req_wrap != nullptr && wr.req_wrap->stream() == stream)
+    if (wr.req_wrap && WriteWrap::FromObject(wr.req_wrap)->stream() == stream)
       return true;
   }
   return false;
@@ -1827,6 +1827,33 @@ void Http2Session::Consume(Local<Object> stream_obj) {
   StreamBase* stream = StreamBase::FromObject(stream_obj);
   stream->PushStreamListener(this);
   Debug(this, "i/o stream consumed");
+}
+
+// Allow injecting of data from JS
+// This is used when the socket has already some data received
+// before our listener was attached
+// https://github.com/nodejs/node/issues/35475
+void Http2Session::Receive(const FunctionCallbackInfo<Value>& args) {
+  Http2Session* session;
+  ASSIGN_OR_RETURN_UNWRAP(&session, args.Holder());
+  CHECK(args[0]->IsObject());
+
+  ArrayBufferViewContents<char> buffer(args[0]);
+  const char* data = buffer.data();
+  size_t len = buffer.length();
+  Debug(session, "Receiving %zu bytes injected from JS", len);
+
+  // Copy given buffer
+  while (len > 0) {
+    uv_buf_t buf = session->OnStreamAlloc(len);
+    size_t copy = buf.len > len ? len : buf.len;
+    memcpy(buf.base, data, copy);
+    buf.len = copy;
+    session->OnStreamRead(copy, buf);
+
+    data += copy;
+    len -= copy;
+  }
 }
 
 Http2Stream* Http2Stream::New(Http2Session* session,
@@ -1966,8 +1993,8 @@ void Http2Stream::Destroy() {
       // we still have queued outbound writes.
       while (!queue_.empty()) {
         NgHttp2StreamWrite& head = queue_.front();
-        if (head.req_wrap != nullptr)
-          head.req_wrap->Done(UV_ECANCELED);
+        if (head.req_wrap)
+          WriteWrap::FromObject(head.req_wrap)->Done(UV_ECANCELED);
         queue_.pop();
       }
 
@@ -2196,7 +2223,8 @@ int Http2Stream::DoWrite(WriteWrap* req_wrap,
     // Store the req_wrap on the last write info in the queue, so that it is
     // only marked as finished once all buffers associated with it are finished.
     queue_.emplace(NgHttp2StreamWrite {
-      i == nbufs - 1 ? req_wrap : nullptr,
+      BaseObjectPtr<AsyncWrap>(
+          i == nbufs - 1 ? req_wrap->GetAsyncWrap() : nullptr),
       bufs[i]
     });
     IncrementAvailableOutboundLength(bufs[i].len);
@@ -2290,10 +2318,11 @@ ssize_t Http2Stream::Provider::Stream::OnRead(nghttp2_session* handle,
   // find out when the HTTP2 stream wants to consume data, and because the
   // StreamBase API allows empty input chunks.
   while (!stream->queue_.empty() && stream->queue_.front().buf.len == 0) {
-    WriteWrap* finished = stream->queue_.front().req_wrap;
+    BaseObjectPtr<AsyncWrap> finished =
+        std::move(stream->queue_.front().req_wrap);
     stream->queue_.pop();
-    if (finished != nullptr)
-      finished->Done(0);
+    if (finished)
+      WriteWrap::FromObject(finished)->Done(0);
   }
 
   if (!stream->queue_.empty()) {
@@ -2919,8 +2948,8 @@ void Http2Ping::DetachFromSession() {
 }
 
 void NgHttp2StreamWrite::MemoryInfo(MemoryTracker* tracker) const {
-  if (req_wrap != nullptr)
-    tracker->TrackField("req_wrap", req_wrap->GetAsyncWrap());
+  if (req_wrap)
+    tracker->TrackField("req_wrap", req_wrap);
   tracker->TrackField("buf", buf);
 }
 
@@ -3052,6 +3081,7 @@ void Initialize(Local<Object> target,
   env->SetProtoMethod(session, "altsvc", Http2Session::AltSvc);
   env->SetProtoMethod(session, "ping", Http2Session::Ping);
   env->SetProtoMethod(session, "consume", Http2Session::Consume);
+  env->SetProtoMethod(session, "receive", Http2Session::Receive);
   env->SetProtoMethod(session, "destroy", Http2Session::Destroy);
   env->SetProtoMethod(session, "goaway", Http2Session::Goaway);
   env->SetProtoMethod(session, "settings", Http2Session::Settings);

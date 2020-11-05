@@ -182,6 +182,10 @@ Same requirements as
 .It Fl -frozen-intrinsics
 Enable experimental frozen intrinsics support.
 .
+.It Fl -heapsnapshot-near-heap-limit Ns = Ns Ar max_count
+Generate heap snapshot when the V8 heap usage is approaching the heap limit.
+No more than the specified number of snapshots will be generated.
+.
 .It Fl -heapsnapshot-signal Ns = Ns Ar signal
 Generate heap snapshot on specified signal.
 .
@@ -277,6 +281,10 @@ These will still be enabled dynamically when `async_hooks` is enabled.
 .
 .It Fl -no-warnings
 Silence all process warnings (including deprecations).
+.
+.It Fl -node-memory-debug
+Enable extra debug checks for memory leaks in Node.js internals. This is
+usually only useful for developers debugging Node.js itself.
 .
 .It Fl -openssl-config Ns = Ns Ar file
 Load an OpenSSL configuration file on startup.

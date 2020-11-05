@@ -2,6 +2,32 @@
 
 <!--introduced_in=v8.5.0-->
 <!-- type=misc -->
+<!-- YAML
+added: v8.5.0
+changes:
+  - version:
+    - v14.13.0
+    pr-url: https://github.com/nodejs/node/pull/35249
+    description: Support for detection of CommonJS named exports.
+  - version: v14.8.0
+    pr-url: https://github.com/nodejs/node/pull/34558
+    description: Unflag Top-Level Await.
+  - version:
+    - v14.0.0
+    - v13.14.0
+    pr-url: https://github.com/nodejs/node/pull/31974
+    description: Remove experimental modules warning.
+  - version:
+    - v13.2.0
+    - v12.17.0
+    pr-url: https://github.com/nodejs/node/pull/29866
+    description: Loading ECMAScript modules no longer requires a command-line flag.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/26745
+    description:
+      Add support for ES modules using `.js` file extension via `package.json`
+      `"type"` field.
+-->
 
 > Stability: 1 - Experimental
 
@@ -115,7 +141,7 @@ future use. The root of the current volume may be referenced via `file:///`.
 #### `node:` Imports
 
 <!-- YAML
-added: REPLACEME
+added: v14.13.1
 -->
 
 `node:` URLs are supported as a means to load Node.js builtin modules. This
@@ -1261,7 +1287,7 @@ success!
 [`transformSource` hook]: #esm_transformsource_source_context_defaulttransformsource
 [`string`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
 [`util.TextDecoder`]: util.md#util_class_util_textdecoder
-[cjs-module-lexer]: https://github.com/guybedford/cjs-module-lexer/tree/0.3.1
+[cjs-module-lexer]: https://github.com/guybedford/cjs-module-lexer/tree/1.0.0
 [special scheme]: https://url.spec.whatwg.org/#special-scheme
 [the official standard format]: https://tc39.github.io/ecma262/#sec-modules
 [transpiler loader example]: #esm_transpiler_loader

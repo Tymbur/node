@@ -729,11 +729,6 @@ when an error occurs (and is caught) during the creation of the
 context, for example, when the allocation fails or the maximum call stack
 size is reached when the context is created.
 
-<a id="ERR_CPU_USAGE"></a>
-### `ERR_CPU_USAGE`
-
-The native call from `process.cpuUsage` could not be processed.
-
 <a id="ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED"></a>
 ### `ERR_CRYPTO_CUSTOM_ENGINE_NOT_SUPPORTED`
 
@@ -792,21 +787,133 @@ The given crypto keys are incompatible with the attempted operation.
 
 The selected public or private key encoding is incompatible with other options.
 
+<a id="ERR_CRYPTO_INITIALIZATION_FAILED"></a>
+### `ERR_CRYPTO_INITIALIZATION_FAILED`
+<!-- YAML
+added: v15.0.0
+-->
+
+Initialization of the crypto subsystem failed.
+
+<a id="ERR_CRYPTO_INVALID_AUTH_TAG"></a>
+### `ERR_CRYPTO_INVALID_AUTH_TAG`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid authentication tag was provided.
+
+<a id="ERR_CRYPTO_INVALID_COUNTER"></a>
+### `ERR_CRYPTO_INVALID_COUNTER`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid counter was provided for a counter-mode cipher.
+
+<a id="ERR_CRYPTO_INVALID_CURVE"></a>
+### `ERR_CRYPTO_INVALID_CURVE`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid elliptic-curve was provided.
+
 <a id="ERR_CRYPTO_INVALID_DIGEST"></a>
 ### `ERR_CRYPTO_INVALID_DIGEST`
 
 An invalid [crypto digest algorithm][] was specified.
+
+<a id="ERR_CRYPTO_INVALID_IV"></a>
+### `ERR_CRYPTO_INVALID_IV`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid initialization vector was provided.
+
+<a id="ERR_CRYPTO_INVALID_JWK"></a>
+### `ERR_CRYPTO_INVALID_JWK`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid JSON Web Key was provided.
 
 <a id="ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE"></a>
 ### `ERR_CRYPTO_INVALID_KEY_OBJECT_TYPE`
 
 The given crypto key object's type is invalid for the attempted operation.
 
+<a id="ERR_CRYPTO_INVALID_KEYLEN"></a>
+### `ERR_CRYPTO_INVALID_KEYLEN`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid key length was provided.
+
+<a id="ERR_CRYPTO_INVALID_KEYPAIR"></a>
+### `ERR_CRYPTO_INVALID_KEYPAIR`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid key pair was provided.
+
+<a id="ERR_CRYPTO_INVALID_KEYTYPE"></a>
+### `ERR_CRYPTO_INVALID_KEYTYPE`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid key type was provided.
+
+<a id="ERR_CRYPTO_INVALID_MESSAGELEN"></a>
+### `ERR_CRYPTO_INVALID_MESSAGELEN`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid message length was provided.
+
+<a id="ERR_CRYPTO_INVALID_SCRYPT_PARAMS"></a>
+### `ERR_CRYPTO_INVALID_SCRYPT_PARAMS`
+<!-- YAML
+added: v15.0.0
+-->
+
+Invalid scrypt algorithm parameters were provided.
+
 <a id="ERR_CRYPTO_INVALID_STATE"></a>
 ### `ERR_CRYPTO_INVALID_STATE`
 
 A crypto method was used on an object that was in an invalid state. For
 instance, calling [`cipher.getAuthTag()`][] before calling `cipher.final()`.
+
+<a id="ERR_CRYPTO_INVALID_TAG_LENGTH"></a>
+### `ERR_CRYPTO_INVALID_TAG_LENGTH`
+<!-- YAML
+added: v15.0.0
+-->
+
+An invalid authentication tag length was provided.
+
+<a id="ERR_CRYPTO_JOB_INIT_FAILED"></a>
+### `ERR_CRYPTO_JOB_INIT_FAILED`
+<!-- YAML
+added: v15.0.0
+-->
+
+Initialization of an asynchronous crypto operation failed.
+
+<a id="ERR_CRYPTO_OPERATION_FAILED"></a>
+### `ERR_CRYPTO_OPERATION_FAILED`
+<!-- YAML
+added: v15.0.0
+-->
+
+A crypto operation failed for an otherwise unspecified reason.
 
 <a id="ERR_CRYPTO_PBKDF2_ERROR"></a>
 ### `ERR_CRYPTO_PBKDF2_ERROR`
@@ -848,10 +955,26 @@ An unknown cipher was specified.
 An unknown Diffie-Hellman group name was given. See
 [`crypto.getDiffieHellman()`][] for a list of valid group names.
 
+<a id="ERR_DLOPEN_FAILED"></a>
+### `ERR_DLOPEN_FAILED`
+<!-- YAML
+added: v15.0.0
+-->
+
+A call to `process.dlopen()` failed.
+
 <a id="ERR_DIR_CLOSED"></a>
 ### `ERR_DIR_CLOSED`
 
 The [`fs.Dir`][] was previously closed.
+
+<a id"ERR_CRYPTO_UNSUPPORTED_OPERATION"></a>
+### `ERR_CRYPTO_UNSUPPORTED_OPERATION`
+<!-- YAML
+added: v15.0.0
+-->
+
+An attempt to invoke an unsupported crypto operation was made.
 
 <a id="ERR_DIR_CONCURRENT_OPERATION"></a>
 ### `ERR_DIR_CONCURRENT_OPERATION`
@@ -927,6 +1050,11 @@ added: v14.0.0
 
 Used when a feature that is not available
 to the current platform which is running Node.js is used.
+
+<a id="ERR_FS_EISDIR"></a>
+### `ERR_FS_EISDIR`
+
+Path is a directory.
 
 <a id="ERR_FS_FILE_TOO_LARGE"></a>
 ### `ERR_FS_FILE_TOO_LARGE`
@@ -1377,6 +1505,15 @@ An invalid HTTP token was supplied.
 
 An IP address is not valid.
 
+<a id="ERR_INVALID_MODULE"></a>
+### `ERR_INVALID_MODULE`
+<!-- YAML
+added: v15.0.0
+-->
+
+An attempt was made to load a module that does not exist or was otherwise not
+valid.
+
 <a id="ERR_INVALID_MODULE_SPECIFIER"></a>
 ### `ERR_INVALID_MODULE_SPECIFIER`
 
@@ -1438,7 +1575,7 @@ type on execution, such as when a function is expected to return a promise.
 <a id="ERR_INVALID_STATE"></a>
 ### `ERR_INVALID_STATE`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 Indicates that an operation cannot be completed due to an invalid state.
@@ -1581,7 +1718,9 @@ failed.
 <a id="ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE"></a>
 ### `ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE`
 <!-- YAML
-added: v14.5.0
+added:
+  - v14.5.0
+  - v12.19.0
 -->
 
 A message posted to a [`MessagePort`][] could not be deserialized in the target
@@ -1624,14 +1763,14 @@ this error will not occur with standard builds of Node.js.
 <a id="ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST"></a>
 ### `ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 An object that needs to be explicitly listed in the `transferList` argument
 is in the object passed to a [`postMessage()`][] call, but is not provided
 in the `transferList` for that call. Usually, this is a `MessagePort`.
 
-In Node.js versions prior to REPLACEME, the error code being used here was
+In Node.js versions prior to v15.0.0, the error code being used here was
 [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`][]. However, the set of
 transferable object types has been expanded to cover more types than
 `MessagePort`.
@@ -1784,8 +1923,8 @@ An attempt was made to `require()` an [ES Module][].
 <a id="ERR_SCRIPT_EXECUTION_INTERRUPTED"></a>
 ### `ERR_SCRIPT_EXECUTION_INTERRUPTED`
 
-Script execution was interrupted by `SIGINT` (For example, when Ctrl+C was
-pressed).
+Script execution was interrupted by `SIGINT` (For example,
+<kbd>Ctrl</kbd>+<kbd>C</kbd> was pressed.)
 
 <a id="ERR_SCRIPT_EXECUTION_TIMEOUT"></a>
 ### `ERR_SCRIPT_EXECUTION_TIMEOUT`
@@ -2252,7 +2391,8 @@ changes:
   - version:
      - v11.4.0
      - v10.15.0
-    pr-url: https://github.com/nodejs/node/commit/186035243fad247e3955f
+    commit: 186035243fad247e3955f
+    pr-url: https://github.com/nodejs-private/node-private/pull/143
     description: Max header size in `http_parser` was set to 8KB.
 -->
 
@@ -2390,7 +2530,7 @@ A given index was out of the accepted range (e.g. negative offsets).
 ### `ERR_INVALID_OPT_VALUE`
 <!-- YAML
 added: v8.0.0
-removed: REPLACEME
+removed: v15.0.0
 -->
 
 An invalid or unexpected value was passed in an options object.
@@ -2399,7 +2539,7 @@ An invalid or unexpected value was passed in an options object.
 ### `ERR_INVALID_OPT_VALUE_ENCODING`
 <!-- YAML
 added: v9.0.0
-removed: REPLACEME
+removed: v15.0.0
 -->
 
 An invalid or unknown file encoding was passed.
@@ -2407,11 +2547,11 @@ An invalid or unknown file encoding was passed.
 <a id="ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST"></a>
 ### `ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`
 <!-- YAML
-removed: REPLACEME
+removed: v15.0.0
 -->
 
 This error code was replaced by [`ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST`][]
-in Node.js REPLACEME, because it is no longer accurate as other types of
+in Node.js v15.0.0, because it is no longer accurate as other types of
 transferable objects also exist now.
 
 <a id="ERR_NAPI_CONS_PROTOTYPE_OBJECT"></a>
@@ -2432,7 +2572,7 @@ A Node.js API was called in an unsupported manner, such as
 <a id="ERR_OPERATION_FAILED"></a>
 ### `ERR_OPERATION_FAILED`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 An operation failed. This is typically used to signal the general failure
@@ -2579,6 +2719,14 @@ removed: v10.0.0
 
 Used when an attempt is made to use a `zlib` object after it has already been
 closed.
+
+<a id="ERR_CPU_USAGE"></a>
+### `ERR_CPU_USAGE`
+<!-- YAML
+removed: v15.0.0
+-->
+
+The native call from `process.cpuUsage` could not be processed.
 
 [ES Module]: esm.md
 [ICU]: intl.md#intl_internationalization_support

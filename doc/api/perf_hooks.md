@@ -55,12 +55,15 @@ Performance Timeline. If `name` is provided, removes only the named mark.
 
 ### `performance.eventLoopUtilization([utilization1[, utilization2]])`
 <!-- YAML
-added: v14.10.0
+added:
+ - v14.10.0
+ - v12.19.0
 -->
 
-* `utilization1` {Object} The result of a previous call to `eventLoopUtilization()`
-* `utilization2` {Object} The result of a previous call to `eventLoopUtilization()`
-    prior to `util1`
+* `utilization1` {Object} The result of a previous call to
+    `eventLoopUtilization()`.
+* `utilization2` {Object} The result of a previous call to
+    `eventLoopUtilization()` prior to `utilization1`.
 * Returns {Object}
   * `idle` {number}
   * `active` {number}
@@ -69,10 +72,13 @@ added: v14.10.0
 The `eventLoopUtilization()` method returns an object that contains the
 cumulative duration of time the event loop has been both idle and active as a
 high resolution milliseconds timer. The `utilization` value is the calculated
-Event Loop Utilization (ELU). If bootstrapping has not yet finished, the
-properties have the value of 0.
+Event Loop Utilization (ELU).
 
-`utilization1` and `utilization2` are optional parameters.
+If bootstrapping has not yet finished on the main thread the properties have
+the value of `0`. The ELU is immediately available on [Worker threads][] since
+bootstrap happens within the event loop.
+
+Both `utilization1` and `utilization2` are optional parameters.
 
 If `utilization1` is passed, then the delta between the current call's `active`
 and `idle` times, as well as the corresponding `utilization` value are
@@ -102,8 +108,8 @@ setImmediate(() => {
 ```
 
 Although the CPU is mostly idle while running this script, the value of
-`utilization` is 1. This is because the call to [`child_process.spawnSync()`][]
-blocks the event loop from proceeding.
+`utilization` is `1`. This is because the call to
+[`child_process.spawnSync()`][] blocks the event loop from proceeding.
 
 Passing in a user-defined object instead of the result of a previous call to
 `eventLoopUtilization()` will lead to undefined behavior. The return values
@@ -348,7 +354,9 @@ initialized.
 
 ### `performanceNodeTiming.idleTime`
 <!-- YAML
-added: v14.10.0
+added:
+  - v14.10.0
+  - v12.19.0
 -->
 
 * {number}
@@ -761,6 +769,7 @@ require('some-module');
 [Performance Timeline]: https://w3c.github.io/performance-timeline/
 [User Timing]: https://www.w3.org/TR/user-timing/
 [Web Performance APIs]: https://w3c.github.io/perf-timing-primer/
+[Worker threads]: worker_threads.md#worker_threads_worker_threads
 [`'exit'`]: process.md#process_event_exit
 [`child_process.spawnSync()`]: child_process.md#child_process_child_process_spawnsync_command_args_options
 [`process.hrtime()`]: process.md#process_process_hrtime_time

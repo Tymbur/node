@@ -546,7 +546,7 @@ added: v8.1.0
 changes:
   - version: v8.2.0
     pr-url: https://github.com/nodejs/node/pull/13490
-    description: Renamed from `currentId`
+    description: Renamed from `currentId`.
 -->
 
 * Returns: {number} The `asyncId` of the current execution context. Useful to
@@ -732,7 +732,9 @@ class DBQuery extends AsyncResource {
 
 #### Static method: `AsyncResource.bind(fn[, type])`
 <!-- YAML
-added: v14.8.0
+added:
+  - v14.8.0
+  - v12.19.0
 -->
 
 * `fn` {Function} The function to bind to the current execution context.
@@ -746,7 +748,9 @@ the `AsyncResource` to which the function is bound.
 
 #### `asyncResource.bind(fn)`
 <!-- YAML
-added: v14.8.0
+added:
+  - v14.8.0
+  - v12.19.0
 -->
 
 * `fn` {Function} The function to bind to the current `AsyncResource`.

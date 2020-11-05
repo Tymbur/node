@@ -30,7 +30,15 @@ console.log('hello world');
 console.log('hello %s', 'world');
 // Prints: hello world, to stdout
 console.error(new Error('Whoops, something bad happened'));
-// Prints: [Error: Whoops, something bad happened], to stderr
+// Prints error message and stack trace to stderr:
+//   Error: Whoops, something bad happened
+//     at [eval]:5:15
+//     at Script.runInThisContext (node:vm:132:18)
+//     at Object.runInThisContext (node:vm:309:38)
+//     at node:internal/process/execution:77:19
+//     at [eval]-wrapper:6:22
+//     at evalScript (node:internal/process/execution:76:60)
+//     at node:internal/main/eval_string:23:3
 
 const name = 'Will Robinson';
 console.warn(`Danger ${name}! Danger!`);
@@ -425,6 +433,9 @@ time is 3869ms, `console.timeEnd()` displays "3.869s".
 <!-- YAML
 added: v0.1.104
 changes:
+  - version: v13.0.0
+    pr-url: https://github.com/nodejs/node/pull/29251
+    description: The elapsed time is diplayed with a suitable time unit.
   - version: v6.0.0
     pr-url: https://github.com/nodejs/node/pull/5901
     description: This method no longer supports multiple calls that don’t map

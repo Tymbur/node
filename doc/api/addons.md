@@ -234,7 +234,9 @@ NODE_MODULE_INIT(/* exports, module, context */) {
 #### Worker support
 <!-- YAML
 changes:
-  - version: v14.8.0
+  - version:
+    - v14.8.0
+    - v12.19.0
     pr-url: https://github.com/nodejs/node/pull/34572
     description: Cleanup hooks may now be asynchronous.
 -->
@@ -269,9 +271,9 @@ The following `addon.cc` uses `AddEnvironmentCleanupHook`:
 
 ```cpp
 // addon.cc
+#include <node.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <node.h>
 
 using node::AddEnvironmentCleanupHook;
 using v8::HandleScope;

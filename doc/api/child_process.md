@@ -729,7 +729,9 @@ changes:
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10653
     description: The `input` option can now be a `Uint8Array`.
-  - version: v6.2.1, v4.5.0
+  - version:
+    - v6.2.1
+    - v4.5.0
     pr-url: https://github.com/nodejs/node/pull/6939
     description: The `encoding` option can now explicitly be set to `buffer`.
 -->
@@ -856,7 +858,9 @@ changes:
   - version: v8.0.0
     pr-url: https://github.com/nodejs/node/pull/10653
     description: The `input` option can now be a `Uint8Array`.
-  - version: v6.2.1, v4.5.0
+  - version:
+    - v6.2.1
+    - v4.5.0
     pr-url: https://github.com/nodejs/node/pull/6939
     description: The `encoding` option can now explicitly be set to `buffer`.
   - version: v5.7.0
@@ -1031,6 +1035,21 @@ If the `serialization` option was set to `'advanced'` used when spawning the
 child process, the `message` argument can contain data that JSON is not able
 to represent.
 See [Advanced serialization][] for more details.
+
+### Event: `'spawn'`
+<!-- YAML
+added: REPLACEME
+-->
+
+The `'spawn'` event is emitted once the child process has spawned successfully.
+
+If emitted, the `'spawn'` event comes before all other events and before any
+data is received via `stdout` or `stderr`.
+
+The `'spawn'` event will fire regardless of whether an error occurs **within**
+the spawned process. For example, if `bash some-command` spawns successfully,
+the `'spawn'` event will fire, though `bash` may fail to spawn `some-command`.
+This caveat also applies when using `{ shell: true }`.
 
 ### `subprocess.channel`
 <!-- YAML

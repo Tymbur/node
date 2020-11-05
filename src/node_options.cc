@@ -118,6 +118,10 @@ void EnvironmentOptions::CheckOptions(std::vector<std::string>* errors) {
                       "used, not both");
   }
 
+  if (heap_snapshot_near_heap_limit < 0) {
+    errors->push_back("--heap-snapshot-near-heap-limit must not be negative");
+  }
+
 #if HAVE_INSPECTOR
   if (!cpu_prof) {
     if (!cpu_prof_name.empty()) {
@@ -341,6 +345,12 @@ EnvironmentOptionsParser::EnvironmentOptionsParser() {
             "Generate heap snapshot on specified signal",
             &EnvironmentOptions::heap_snapshot_signal,
             kAllowedInEnvironment);
+  AddOption("--heapsnapshot-near-heap-limit",
+            "Generate heap snapshots whenever V8 is approaching "
+            "the heap limit. No more than the specified number of "
+            "heap snapshots will be generated.",
+            &EnvironmentOptions::heap_snapshot_near_heap_limit,
+            kAllowedInEnvironment);
   AddOption("--http-parser", "", NoOp{}, kAllowedInEnvironment);
   AddOption("--insecure-http-parser",
             "use an insecure HTTP parser that accepts invalid HTTP headers",
@@ -474,6 +484,10 @@ EnvironmentOptionsParser::EnvironmentOptionsParser() {
             "define unhandled rejections behavior. Options are 'strict' (raise "
             "an error), 'warn' (enforce warnings) or 'none' (silence warnings)",
             &EnvironmentOptions::unhandled_rejections,
+            kAllowedInEnvironment);
+  AddOption("--verify-base-objects",
+            "", /* undocumented, only for debugging */
+            &EnvironmentOptions::verify_base_objects,
             kAllowedInEnvironment);
 
   AddOption("--check",
@@ -758,6 +772,12 @@ PerProcessOptionsParser::PerProcessOptionsParser(
             kAllowedInEnvironment);
 
   Insert(iop, &PerProcessOptions::get_per_isolate_options);
+
+  AddOption("--node-memory-debug",
+            "Run with extra debug checks for memory leaks in Node.js itself",
+            NoOp{}, kAllowedInEnvironment);
+  Implies("--node-memory-debug", "--debug-arraybuffer-allocations");
+  Implies("--node-memory-debug", "--verify-base-objects");
 }
 
 inline std::string RemoveBrackets(const std::string& host) {

@@ -240,6 +240,8 @@ For information about the governance of the Node.js project, see
 
 * [addaleax](https://github.com/addaleax) -
 **Anna Henningsen** &lt;anna@addaleax.net&gt; (she/her)
+* [aduh95](https://github.com/aduh95) -
+**Antoine du Hamel** &lt;duhamelantoine1995@gmail.com&gt; (he/him)
 * [ak239](https://github.com/ak239) -
 **Aleksei Koziatinskii** &lt;ak239spb@gmail.com&gt;
 * [AndreasMadsen](https://github.com/AndreasMadsen) -
@@ -262,8 +264,6 @@ For information about the governance of the Node.js project, see
 **Bradley Farias** &lt;bradley.meck@gmail.com&gt;
 * [bmeurer](https://github.com/bmeurer) -
 **Benedikt Meurer** &lt;benedikt.meurer@gmail.com&gt;
-* [bnoordhuis](https://github.com/bnoordhuis) -
-**Ben Noordhuis** &lt;info@bnoordhuis.nl&gt;
 * [boneskull](https://github.com/boneskull) -
 **Christopher Hiller** &lt;boneskull@boneskull.com&gt; (he/him)
 * [BridgeAR](https://github.com/BridgeAR) -
@@ -388,8 +388,6 @@ For information about the governance of the Node.js project, see
 **Ricky Zhou** &lt;0x19951125@gmail.com&gt; (he/him)
 * [ronag](https://github.com/ronag) -
 **Robert Nagy** &lt;ronagy@icloud.com&gt;
-* [ronkorving](https://github.com/ronkorving) -
-**Ron Korving** &lt;ron@ronkorving.nl&gt;
 * [rubys](https://github.com/rubys) -
 **Sam Ruby** &lt;rubys@intertwingly.net&gt;
 * [ruyadorno](https://github.com/ruyadorno) -
@@ -415,7 +413,7 @@ For information about the governance of the Node.js project, see
 * [starkwang](https://github.com/starkwang) -
 **Weijia Wang** &lt;starkwang@126.com&gt;
 * [sxa](https://github.com/sxa) -
-**Stewart X Addison** &lt;sxa@uk.ibm.com&gt;
+**Stewart X Addison** &lt;sxa@redhat.com&gt; (he/him)
 * [targos](https://github.com/targos) -
 **Michaël Zasso** &lt;targos@protonmail.com&gt; (he/him)
 * [TimothyGu](https://github.com/TimothyGu) -
@@ -451,6 +449,8 @@ For information about the governance of the Node.js project, see
 **Anna M. Kedzierska** &lt;anna.m.kedzierska@gmail.com&gt;
 * [aqrln](https://github.com/aqrln) -
 **Alexey Orlenko** &lt;eaglexrlnk@gmail.com&gt; (he/him)
+* [bnoordhuis](https://github.com/bnoordhuis) -
+**Ben Noordhuis** &lt;info@bnoordhuis.nl&gt;
 * [brendanashworth](https://github.com/brendanashworth) -
 **Brendan Ashworth** &lt;brendan.ashworth@me.com&gt;
 * [calvinmetcalf](https://github.com/calvinmetcalf) -
@@ -539,6 +539,8 @@ For information about the governance of the Node.js project, see
 **Robert Kowalski** &lt;rok@kowalski.gd&gt;
 * [romankl](https://github.com/romankl) -
 **Roman Klauke** &lt;romaaan.git@gmail.com&gt;
+* [ronkorving](https://github.com/ronkorving) -
+**Ron Korving** &lt;ron@ronkorving.nl&gt;
 * [RReverser](https://github.com/RReverser) -
 **Ingvar Stepanyan** &lt;me@rreverser.com&gt;
 * [sam-github](https://github.com/sam-github) -
@@ -568,6 +570,11 @@ For information about the governance of the Node.js project, see
 Collaborators follow the [Collaborator Guide](./doc/guides/collaborator-guide.md) in
 maintaining the Node.js project.
 
+### Triagers
+
+* [PoojaDurgad](https://github.com/PoojaDurgad) -
+**Pooja Durgad** &lt;Pooja.D.P@ibm.com&gt;
+
 ### Release Keys
 
 Primary GPG keys for Node.js Releasers (some Releasers sign with subkeys):
@@ -576,6 +583,8 @@ Primary GPG keys for Node.js Releasers (some Releasers sign with subkeys):
 `4ED778F539E3634C779C87C6D7062848A1AB005C`
 * **Colin Ihrig** &lt;cjihrig@gmail.com&gt;
 `94AE36675C464D64BAFA68DD7434390BDBE9B9C5`
+* **Danielle Adams** &lt;adamzdanielle@gmail.com&gt;
+`1C050899334244A8AF75E53792EF661D867B9DFA`
 * **James M Snell** &lt;jasnell@keybase.io&gt;
 `71DCFD284A79C3B38668286BC97EC7A07EDE3FC1`
 * **Michaël Zasso** &lt;targos@protonmail.com&gt;
@@ -598,6 +607,7 @@ To import the full set of trusted release keys:
 ```bash
 gpg --keyserver pool.sks-keyservers.net --recv-keys 4ED778F539E3634C779C87C6D7062848A1AB005C
 gpg --keyserver pool.sks-keyservers.net --recv-keys 94AE36675C464D64BAFA68DD7434390BDBE9B9C5
+gpg --keyserver pool.sks-keyservers.net --recv-keys 1C050899334244A8AF75E53792EF661D867B9DFA
 gpg --keyserver pool.sks-keyservers.net --recv-keys 71DCFD284A79C3B38668286BC97EC7A07EDE3FC1
 gpg --keyserver pool.sks-keyservers.net --recv-keys 8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600
 gpg --keyserver pool.sks-keyservers.net --recv-keys C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8

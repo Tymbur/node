@@ -115,6 +115,7 @@ class EnvironmentOptions : public Options {
   bool experimental_vm_modules = false;
   bool expose_internals = false;
   bool frozen_intrinsics = false;
+  int64_t heap_snapshot_near_heap_limit = 0;
   std::string heap_snapshot_signal;
   uint64_t max_http_header_size = 16 * 1024;
   bool no_deprecation = false;
@@ -150,6 +151,12 @@ class EnvironmentOptions : public Options {
   bool trace_warnings = false;
   std::string unhandled_rejections;
   std::string userland_loader;
+  bool verify_base_objects =
+#ifdef DEBUG
+      true;
+#else
+      false;
+#endif  // DEBUG
 
   bool syntax_check_only = false;
   bool has_eval_string = false;

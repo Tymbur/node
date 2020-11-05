@@ -19,7 +19,7 @@ accessible.
 
 ## Class: `AbortController`
 <!--YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 > Stability: 1 - Experimental
@@ -42,7 +42,7 @@ console.log(ac.signal.aborted);  // Prints True
 
 ### `abortController.abort()`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 Triggers the abort signal, causing the `abortController.signal` to emit
@@ -50,14 +50,14 @@ the `'abort'` event.
 
 ### `abortController.signal`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 * Type: {AbortSignal}
 
 ### Class: `AbortSignal`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 * Extends: {EventTarget}
@@ -67,7 +67,7 @@ The `AbortSignal` is used to notify observers when the
 
 #### Event: `'abort'`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 The `'abort'` event is emitted when the `abortController.abort()` method
@@ -97,14 +97,14 @@ Failure to do so may result in memory leaks.
 
 #### `abortSignal.aborted`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 * Type: {boolean} True after the `AbortController` has been aborted.
 
 #### `abortSignal.onabort`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 -->
 
 * Type: {Function}
@@ -169,6 +169,30 @@ added: v0.1.100
 
 Used to print to stdout and stderr. See the [`console`][] section.
 
+## `Event`
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+> Stability: 1 - Experimental
+
+A browser-compatible implementation of the `Event` class. See
+[`EventTarget` and `Event` API][] for more details.
+
+## `EventTarget`
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+> Stability: 1 - Experimental
+
+A browser-compatible implementation of the `EventTarget` class. See
+[`EventTarget` and `Event` API][] for more details.
+
 ## `exports`
 
 This variable may appear to be global but is not. See [`exports`][].
@@ -186,6 +210,33 @@ In browsers, the top-level scope is the global scope. This means that
 within the browser `var something` will define a new global variable. In
 Node.js this is different. The top-level scope is not the global scope;
 `var something` inside a Node.js module will be local to that module.
+
+## `MessageChannel`
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+The `MessageChannel` class. See [`MessageChannel`][] for more details.
+
+## `MessageEvent`
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+The `MessageEvent` class. See [`MessageEvent`][] for more details.
+
+## `MessagePort`
+<!-- YAML
+added: v15.0.0
+-->
+
+<!-- type=global -->
+
+The `MessagePort` class. See [`MessagePort`][] for more details.
 
 ## `module`
 
@@ -322,6 +373,10 @@ The object that acts as the namespace for all W3C
 [Mozilla Developer Network][webassembly-mdn] for usage and compatibility.
 
 [`AbortController`]: https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+[`EventTarget` and `Event` API]: events.md#event-target-and-event-api
+[`MessageChannel`]: worker_threads.md#worker_threads_class_messagechannel
+[`MessageEvent`]: https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/MessageEvent
+[`MessagePort`]: worker_threads.md#worker_threads_class_messageport
 [`TextDecoder`]: util.md#util_class_util_textdecoder
 [`TextEncoder`]: util.md#util_class_util_textencoder
 [`URLSearchParams`]: url.md#url_class_urlsearchparams

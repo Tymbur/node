@@ -82,7 +82,9 @@ $ source node_bash_completion
 
 ### `--conditions=condition`
 <!-- YAML
-added: v14.9.0
+added:
+  - v14.9.0
+  - v12.19.0
 -->
 
 > Stability: 1 - Experimental
@@ -201,9 +203,9 @@ Currently, overriding `Error.prepareStackTrace` is ignored when the
 
 ### `--experimental-abortcontroller`
 <!-- YAML
-added: REPLACEME
+added: v15.0.0
 changes:
-  - version: REPLACEME
+  - version: v15.0.0
     pr-url: https://github.com/nodejs/node/pull/33527
     description: --experimental-abortcontroller is no longer required.
 -->
@@ -288,7 +290,7 @@ changes:
   - version: v13.6.0
     pr-url: https://github.com/nodejs/node/pull/30980
     description: changed from `--experimental-wasi-unstable-preview0` to
-                 `--experimental-wasi-unstable-preview1`
+                 `--experimental-wasi-unstable-preview1`.
 -->
 
 Enable experimental WebAssembly System Interface (WASI) support.
@@ -330,6 +332,52 @@ reference. Code may break under this flag.
 
 `--require` runs prior to freezing intrinsics in order to allow polyfills to
 be added.
+
+### `--heapsnapshot-near-heap-limit=max_count`
+<!-- YAML
+added: REPLACEME
+-->
+
+> Stability: 1 - Experimental
+
+Writes a V8 heap snapshot to disk when the V8 heap usage is approaching the
+heap limit. `count` should be a non-negative integer (in which case
+Node.js will write no more than `max_count` snapshots to disk).
+
+When generating snapshots, garbage collection may be triggered and bring
+the heap usage down, therefore multiple snapshots may be written to disk
+before the Node.js instance finally runs out of memory. These heap snapshots
+can be compared to determine what objects are being allocated during the
+time consecutive snapshots are taken. It's not guaranteed that Node.js will
+write exactly `max_count` snapshots to disk, but it will try
+its best to generate at least one and up to `max_count` snapshots before the
+Node.js instance runs out of memory when `max_count` is greater than `0`.
+
+Generating V8 snapshots takes time and memory (both memory managed by the
+V8 heap and native memory outside the V8 heap). The bigger the heap is,
+the more resources it needs. Node.js will adjust the V8 heap to accommondate
+the additional V8 heap memory overhead, and try its best to avoid using up
+all the memory avialable to the process. When the process uses
+more memory than the system deems appropriate, the process may be terminated
+abruptly by the system, depending on the system configuration.
+
+```console
+$ node --max-old-space-size=100 --heapsnapshot-near-heap-limit=3 index.js
+Wrote snapshot to Heap.20200430.100036.49580.0.001.heapsnapshot
+Wrote snapshot to Heap.20200430.100037.49580.0.002.heapsnapshot
+Wrote snapshot to Heap.20200430.100038.49580.0.003.heapsnapshot
+
+<--- Last few GCs --->
+
+[49580:0x110000000]     4826 ms: Mark-sweep 130.6 (147.8) -> 130.5 (147.8) MB, 27.4 / 0.0 ms  (average mu = 0.126, current mu = 0.034) allocation failure scavenge might not succeed
+[49580:0x110000000]     4845 ms: Mark-sweep 130.6 (147.8) -> 130.6 (147.8) MB, 18.8 / 0.0 ms  (average mu = 0.088, current mu = 0.031) allocation failure scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+....
+```
 
 ### `--heapsnapshot-signal=signal`
 <!-- YAML
@@ -544,6 +592,14 @@ added: v6.0.0
 
 Silence all process warnings (including deprecations).
 
+### `--node-memory-debug`
+<!-- YAML
+added: v15.0.0
+-->
+
+Enable extra debug checks for memory leaks in Node.js internals. This is
+usually only useful for developers debugging Node.js itself.
+
 ### `--openssl-config=file`
 <!-- YAML
 added: v6.9.0
@@ -692,7 +748,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: Changed from `--diagnostic-report-directory` to
-                 `--report-directory`
+                 `--report-directory`.
 -->
 
 Location at which the report will be generated.
@@ -709,7 +765,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: changed from `--diagnostic-report-filename` to
-                 `--report-filename`
+                 `--report-filename`.
 -->
 
 Name of the file to which the report will be written.
@@ -727,7 +783,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: changed from `--diagnostic-report-on-fatalerror` to
-                 `--report-on-fatalerror`
+                 `--report-on-fatalerror`.
 -->
 
 Enables the report to be triggered on fatal errors (internal errors within
@@ -748,7 +804,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: changed from `--diagnostic-report-on-signal` to
-                 `--report-on-signal`
+                 `--report-on-signal`.
 -->
 
 Enables report to be generated upon receiving the specified (or predefined)
@@ -767,7 +823,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: changed from `--diagnostic-report-signal` to
-                 `--report-signal`
+                 `--report-signal`.
 -->
 
 Sets or resets the signal for report generation (not supported on Windows).
@@ -785,7 +841,7 @@ changes:
   - version: v12.0.0
     pr-url: https://github.com/nodejs/node/pull/27312
     description: changed from `--diagnostic-report-uncaught-exception` to
-                 `--report-uncaught-exception`
+                 `--report-uncaught-exception`.
 -->
 
 Enables report to be generated on uncaught exceptions. Useful when inspecting
@@ -1266,6 +1322,7 @@ Node.js options that are allowed are:
 * `--force-context-aware`
 * `--force-fips`
 * `--frozen-intrinsics`
+* `--heapsnapshot-near-heap-limit`
 * `--heapsnapshot-signal`
 * `--http-parser`
 * `--icu-data-dir`
@@ -1280,6 +1337,7 @@ Node.js options that are allowed are:
 * `--no-deprecation`
 * `--no-force-async-hooks-checks`
 * `--no-warnings`
+* `--node-memory-debug`
 * `--openssl-config`
 * `--pending-deprecation`
 * `--policy-integrity`

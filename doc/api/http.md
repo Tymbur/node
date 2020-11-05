@@ -113,7 +113,9 @@ http.get({
 <!-- YAML
 added: v0.3.4
 changes:
-  - version: v14.5.0
+  - version:
+    - v14.5.0
+    - v12.19.0
     pr-url: https://github.com/nodejs/node/pull/33617
     description: Add `maxTotalSockets` option to agent constructor.
   - version: v14.5.0
@@ -311,7 +313,9 @@ can have open per origin. Origin is the returned value of [`agent.getName()`][].
 
 ### `agent.maxTotalSockets`
 <!-- YAML
-added: v14.5.0
+added:
+  - v14.5.0
+  - v12.19.0
 -->
 
 * {number}
@@ -772,14 +776,18 @@ added: v0.1.97
 
 ### `request.host`
 <!-- YAML
-added: v14.5.0
+added:
+  - v14.5.0
+  - v12.19.0
 -->
 
 * {string} The request host.
 
 ### `request.protocol`
 <!-- YAML
-added: v14.5.0
+added:
+  - v14.5.0
+  - v12.19.0
 -->
 
 * {string} The request protocol.
@@ -926,8 +934,7 @@ added: v0.3.0
 
 Reference to the underlying socket. Usually users will not want to access
 this property. In particular, the socket will not emit `'readable'` events
-because of how the protocol parser attaches to the socket. The `socket`
-may also be accessed via `request.connection`.
+because of how the protocol parser attaches to the socket.
 
 ```js
 const http = require('http');
@@ -1044,20 +1051,20 @@ not be emitted.
 <!-- YAML
 added: v0.1.94
 changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/4557
-    description: The default action of calling `.destroy()` on the `socket`
-                 will no longer take place if there are listeners attached
-                 for `'clientError'`.
+  - version: v12.0.0
+    pr-url: https://github.com/nodejs/node/pull/25605
+    description: The default behavior will return a 431 Request Header
+                 Fields Too Large if a HPE_HEADER_OVERFLOW error occurs.
   - version: v9.4.0
     pr-url: https://github.com/nodejs/node/pull/17672
     description: The `rawPacket` is the current buffer that just parsed. Adding
                  this buffer to the error object of `'clientError'` event is to
                  make it possible that developers can log the broken packet.
-  - version: v12.0.0
-    pr-url: https://github.com/nodejs/node/pull/25605
-    description: The default behavior will return a 431 Request Header
-                 Fields Too Large if a HPE_HEADER_OVERFLOW error occurs.
+  - version: v6.0.0
+    pr-url: https://github.com/nodejs/node/pull/4557
+    description: The default action of calling `.destroy()` on the `socket`
+                 will no longer take place if there are listeners attached
+                 for `'clientError'`.
 -->
 
 * `exception` {Error}
@@ -1157,7 +1164,7 @@ This event is emitted when a new TCP stream is established. `socket` is
 typically an object of type [`net.Socket`][]. Usually users will not want to
 access this event. In particular, the socket will not emit `'readable'` events
 because of how the protocol parser attaches to the socket. The `socket` can
-also be accessed at `request.connection`.
+also be accessed at `request.socket`.
 
 This event can also be explicitly emitted by users to inject connections
 into the HTTP server. In that case, any [`Duplex`][] stream can be passed.
@@ -1186,7 +1193,7 @@ per connection (in the case of HTTP Keep-Alive connections).
 added: v0.1.94
 changes:
   - version: v10.0.0
-    pr-url: v10.0.0
+    pr-url: https://github.com/nodejs/node/pull/19981
     description: Not listening to this event no longer causes the socket
                  to be destroyed if a client sends an Upgrade header.
 -->
@@ -1658,8 +1665,7 @@ added: v0.3.0
 Reference to the underlying socket. Usually users will not want to access
 this property. In particular, the socket will not emit `'readable'` events
 because of how the protocol parser attaches to the socket. After
-`response.end()`, the property is nulled. The `socket` may also be accessed
-via `response.connection`.
+`response.end()`, the property is nulled.
 
 ```js
 const http = require('http');
@@ -1791,13 +1797,18 @@ the request body should be sent. See the [`'checkContinue'`][] event on
 <!-- YAML
 added: v0.1.30
 changes:
+  - version: v14.14.0
+    pr-url: https://github.com/nodejs/node/pull/35274
+    description: Allow passing headers as an array.
   - version:
      - v11.10.0
      - v10.17.0
     pr-url: https://github.com/nodejs/node/pull/25974
     description: Return `this` from `writeHead()` to allow chaining with
                  `end()`.
-  - version: v5.11.0, v4.4.5
+  - version:
+    - v5.11.0
+    - v4.4.5
     pr-url: https://github.com/nodejs/node/pull/6291
     description: A `RangeError` is thrown if `statusCode` is not a number in
                  the range `[100, 999]`.
@@ -1805,13 +1816,18 @@ changes:
 
 * `statusCode` {number}
 * `statusMessage` {string}
-* `headers` {Object}
+* `headers` {Object|Array}
 * Returns: {http.ServerResponse}
 
 Sends a response header to the request. The status code is a 3-digit HTTP
 status code, like `404`. The last argument, `headers`, are the response headers.
 Optionally one can give a human-readable `statusMessage` as the second
 argument.
+
+`headers` may be an `Array` where the keys and values are in the same list.
+It is *not* a list of tuples. So, the even-numbered offsets are key values,
+and the odd-numbered offsets are the associated values. The array is in the same
+format as `request.rawHeaders`.
 
 Returns a reference to the `ServerResponse`, so that calls can be chained.
 
@@ -1942,7 +1958,9 @@ const req = http.request({
 <!-- YAML
 added: v0.3.0
 changes:
-  - version: v14.5.0
+  - version:
+    - v14.5.0
+    - v12.19.0
     pr-url: https://github.com/nodejs/node/pull/32789
     description: The function returns `this` for consistency with other Readable
                  streams.
@@ -2059,7 +2077,7 @@ added: v0.5.9
 * `callback` {Function}
 * Returns: {http.IncomingMessage}
 
-Calls `message.connection.setTimeout(msecs, callback)`.
+Calls `message.socket.setTimeout(msecs, callback)`.
 
 ### `message.socket`
 <!-- YAML
@@ -2187,7 +2205,9 @@ changes:
   - version: v13.3.0
     pr-url: https://github.com/nodejs/node/pull/30570
     description: The `maxHeaderSize` option is supported now.
-  - version: v9.6.0, v8.12.0
+  - version:
+    - v9.6.0
+    - v8.12.0
     pr-url: https://github.com/nodejs/node/pull/15752
     description: The `options` argument is supported now.
 -->
